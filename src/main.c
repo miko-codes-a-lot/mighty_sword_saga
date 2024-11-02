@@ -54,6 +54,9 @@ int main ()
         }
       }
 
+      message = (is_player_turn_one == 1) ? "Player 1's turn" : "Player 2's turn";
+      color = (is_player_turn_one == 1) ? RED : GREEN;
+
       int winner =  check_board_horizontal(board) ||
                     check_board_vertical(board) ||
                     check_broad_cross(board);
@@ -90,7 +93,7 @@ int main ()
 		DrawText("Tic Tac Toe", 10, 10, 20, WHITE);
 
     // Game Header
-      DrawText(message, 180, 50, 20, color);
+    DrawText(message, 180, 50, 20, color);
 
 		// draw the board
 		for (int i = 1; i <= 4; i++) {
