@@ -67,17 +67,25 @@ int main()
       message = (is_player_turn_one == 1) ? "Player 1's turn" : "Player 2's turn";
       color = (is_player_turn_one == 1) ? RED : GREEN;
 
-      int winner = check_board_horizontal(board) ||
-                   check_board_vertical(board) ||
-                   check_broad_cross(board);
+      int (*check_functions[3])(int[3][3]) = {
+          check_board_horizontal,
+          check_board_vertical,
+          check_broad_cross
+      };
 
-      if (winner)
-      {
-        game_over = 1;
-        player_winner = winner;
+      int winner = 0;
+      for (int i = 0; i < 3; i++) {
+        winner = check_functions[i](board);
+
+        if (winner)
+        {
+          game_over = 1;
+          player_winner = winner;
+          break;
+        }
       }
-      else
-      {
+
+      if (winner == 0) {
         int is_draw = check_board_draw(board);
         if (is_draw)
         {
