@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include <stdio.h>
+#include "check_board.h"
 
 #include "resource_dir.h"
 
@@ -13,26 +14,17 @@ int main ()
 	SetTargetFPS(60);
 
 	// Game State
-	int grid[3][3] = { 0 };
-
+	int board[3][3] = { 0 };
 	bool isPlayerOne = true;
+  int player_winner = 0;
+  int game_over = 0;
 
 	while (!WindowShouldClose())
 	{
-		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+		if (!game_over && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 			Vector2 mousePosition = GetMousePosition();
 			int row = mousePosition.y;
 			int col = mousePosition.x;
-
-			// if (col < 100 || col > 400) {
-			// 	printf("Col out of bound\n");
-			// 	fflush(stdout);
-			// }
-
-			// if (row < 100 | row > 400) {
-			// 	printf("Row out of bound \n");
-			// 	fflush(stdout);
-			// }
 
 			if (col >= 100 && col <= 400 && row >= 100 && row <= 400) {
 				int rowIndex = 2;
@@ -50,33 +42,55 @@ int main ()
 					colIndex = 1;
 				};
 
-				if (grid[rowIndex][colIndex] == 0) {
-					grid[rowIndex][colIndex] = (isPlayerOne) ? 1 : 2;
+				if (board[rowIndex][colIndex] == 0) {
+					board[rowIndex][colIndex] = (isPlayerOne) ? 1 : 2;
 
 					isPlayerOne = !isPlayerOne;
 				}
-
-				// printf("rowIndex: %d, colIndex: %d\n", rowIndex, colIndex);
-				// fflush(stdout);
 			}
-
-			// printf("row: %d, col: %d\n", row, col);
-			// fflush(stdout);
 		}
+
+    int winner =  check_board_horizontal(board) ||
+                  check_board_vertical(board) ||
+                  check_broad_cross(board);
+
+    if (winner) {
+      game_over = 1;
+      player_winner = winner;
+    } else {
+      int is_draw = check_board_draw(board);
+      if (is_draw) {
+        game_over = 1;
+        player_winner = 0;
+      }
+    }
 
 		BeginDrawing();
 		ClearBackground(BLACK);
 		DrawText("Tic Tac Toe", 10, 10, 20, WHITE);
 
-		DrawText(
-			(isPlayerOne) ? "Player 1's turn" : "Player 2's turn",
-			180,
-			50,
-			20,
-			(isPlayerOne) ? RED : GREEN
-		);
+    // Game Header
+    if (game_over) {
+      char *message;
 
-		// draw the grid
+      if (player_winner != 0) {
+        message = (player_winner == 1) ? "Player 1 wins!" : "Player 2 wins!";
+      } else {
+        message = "Draw game!";
+      }
+
+      DrawText(message, 180, 50, 20, WHITE);
+    } else {
+      DrawText(
+        (isPlayerOne) ? "Player 1's turn" : "Player 2's turn",
+        180,
+        50,
+        20,
+        (isPlayerOne) ? RED : GREEN
+      );
+    }
+
+		// draw the board
 		for (int i = 1; i <= 4; i++) {
 			DrawLine(100, 100 * i, 400, 100 * i, WHITE); // horizontal
 			DrawLine(100 * i, 100, 100 * i, 400, WHITE); // vertical
@@ -84,8 +98,8 @@ int main ()
 
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
-				if (grid[row][col] != 0) {
-					Color color = (grid[row][col] == 1) ? RED : GREEN;
+				if (board[row][col] != 0) {
+					Color color = (board[row][col] == 1) ? RED : GREEN;
 					DrawCircle(((col + 1) * 100) + 50, ((row + 1) * 100) + 50, 30, color);
 				}
 			}
