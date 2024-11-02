@@ -15,53 +15,73 @@ int main ()
 
 	// Game State
 	int board[3][3] = { 0 };
-	bool isPlayerOne = true;
+	int is_player_turn_one = 1;
   int player_winner = 0;
   int game_over = 0;
+  
+  char *message;
+  Color color;
 
 	while (!WindowShouldClose())
 	{
-		if (!game_over && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-			Vector2 mousePosition = GetMousePosition();
-			int row = mousePosition.y;
-			int col = mousePosition.x;
+    if (!game_over) {
+      if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePosition = GetMousePosition();
+        int row = mousePosition.y;
+        int col = mousePosition.x;
 
-			if (col >= 100 && col <= 400 && row >= 100 && row <= 400) {
-				int rowIndex = 2;
-				int colIndex = 2;
+        if (col >= 100 && col <= 400 && row >= 100 && row <= 400) {
+          int rowIndex = 2;
+          int colIndex = 2;
 
-				if (row < 200) {
-					rowIndex = 0;
-				} else if (row < 300) {
-					rowIndex = 1;
-				};
+          if (row < 200) {
+            rowIndex = 0;
+          } else if (row < 300) {
+            rowIndex = 1;
+          };
 
-				if (col < 200) {
-					colIndex = 0;
-				} else if (col < 300) {
-					colIndex = 1;
-				};
+          if (col < 200) {
+            colIndex = 0;
+          } else if (col < 300) {
+            colIndex = 1;
+          };
 
-				if (board[rowIndex][colIndex] == 0) {
-					board[rowIndex][colIndex] = (isPlayerOne) ? 1 : 2;
+          if (board[rowIndex][colIndex] == 0) {
+            board[rowIndex][colIndex] = (is_player_turn_one) ? 1 : 2;
 
-					isPlayerOne = !isPlayerOne;
-				}
-			}
-		}
+            is_player_turn_one = !is_player_turn_one;
+          }
+        }
+      }
 
-    int winner =  check_board_horizontal(board) ||
-                  check_board_vertical(board) ||
-                  check_broad_cross(board);
+      int winner =  check_board_horizontal(board) ||
+                    check_board_vertical(board) ||
+                    check_broad_cross(board);
 
-    if (winner) {
-      game_over = 1;
-      player_winner = winner;
-    } else {
-      int is_draw = check_board_draw(board);
-      if (is_draw) {
+      if (winner) {
         game_over = 1;
+        player_winner = winner;
+      } else {
+        int is_draw = check_board_draw(board);
+        if (is_draw) {
+          game_over = 1;
+          player_winner = 0;
+        }
+      }
+    } else {
+      if (IsKeyPressed(KEY_SPACE)) {
+        reset_board(board);
         player_winner = 0;
+        game_over = 0;
+        is_player_turn_one = 1;
+      }
+
+      if (player_winner != 0) {
+        message = (player_winner == 1) ? "Player 1 wins!" : "Player 2 wins!";
+        color = (player_winner == 1) ? RED : GREEN;
+      } else {
+        message = "Draw game!";
+        color = WHITE;
       }
     }
 
@@ -70,25 +90,7 @@ int main ()
 		DrawText("Tic Tac Toe", 10, 10, 20, WHITE);
 
     // Game Header
-    if (game_over) {
-      char *message;
-
-      if (player_winner != 0) {
-        message = (player_winner == 1) ? "Player 1 wins!" : "Player 2 wins!";
-      } else {
-        message = "Draw game!";
-      }
-
-      DrawText(message, 180, 50, 20, WHITE);
-    } else {
-      DrawText(
-        (isPlayerOne) ? "Player 1's turn" : "Player 2's turn",
-        180,
-        50,
-        20,
-        (isPlayerOne) ? RED : GREEN
-      );
-    }
+      DrawText(message, 180, 50, 20, color);
 
 		// draw the board
 		for (int i = 1; i <= 4; i++) {
