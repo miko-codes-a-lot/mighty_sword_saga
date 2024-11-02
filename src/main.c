@@ -56,8 +56,8 @@ int main ()
 					isPlayerOne = !isPlayerOne;
 				}
 
-				printf("rowIndex: %d, colIndex: %d\n", rowIndex, colIndex);
-				fflush(stdout);
+				// printf("rowIndex: %d, colIndex: %d\n", rowIndex, colIndex);
+				// fflush(stdout);
 			}
 
 			// printf("row: %d, col: %d\n", row, col);
@@ -80,6 +80,15 @@ int main ()
 		for (int i = 1; i <= 4; i++) {
 			DrawLine(100, 100 * i, 400, 100 * i, WHITE); // horizontal
 			DrawLine(100 * i, 100, 100 * i, 400, WHITE); // vertical
+		}
+
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				if (grid[row][col] != 0) {
+					Color color = (grid[row][col] == 1) ? RED : GREEN;
+					DrawCircle(((col + 1) * 100) + 50, ((row + 1) * 100) + 50, 30, color);
+				}
+			}
 		}
 		
 		EndDrawing();
