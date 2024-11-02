@@ -1,3 +1,13 @@
+void reset_board (int board[3][3])
+{
+  int checked = 0;
+  for (int row = 0; row < 3; row++) {
+    for (int col = 0; col < 3; col++) {
+      board[row][col] = 0;
+    }
+  }
+}
+
 int check_board_draw (int board[3][3])
 {
   int checked = 0;
