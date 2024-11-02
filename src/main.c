@@ -69,8 +69,8 @@ int main ()
 		DrawText("Tic Tac Toe", 10, 10, 20, WHITE);
 
 		DrawText(
-			(isPlayerOne) ? "Player 1" : "Player 2",
-			200,
+			(isPlayerOne) ? "Player 1's turn" : "Player 2's turn",
+			180,
 			50,
 			20,
 			(isPlayerOne) ? RED : GREEN
