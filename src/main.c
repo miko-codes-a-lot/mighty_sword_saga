@@ -70,11 +70,11 @@ int main()
       int (*check_functions[3])(int[3][3]) = {
           check_board_horizontal,
           check_board_vertical,
-          check_broad_cross
-      };
+          check_broad_cross};
 
       int winner = 0;
-      for (int i = 0; i < 3; i++) {
+      for (int i = 0; i < 3; i++)
+      {
         winner = check_functions[i](board);
 
         if (winner)
@@ -85,7 +85,8 @@ int main()
         }
       }
 
-      if (winner == 0) {
+      if (winner == 0)
+      {
         int is_draw = check_board_draw(board);
         if (is_draw)
         {
