@@ -68,6 +68,7 @@
   "files.associations": {
     "resource_dir.h": "c",
     "raylib.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "check_board.h": "c"
   }
 }
