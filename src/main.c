@@ -35,8 +35,6 @@ int main ()
 			// }
 
 			if (col >= 100 && col <= 400 && row >= 100 && row <= 400) {
-				isPlayerOne = !isPlayerOne;
-
 				int rowIndex = 2;
 				int colIndex = 2;
 
@@ -51,6 +49,12 @@ int main ()
 				} else if (col < 300) {
 					colIndex = 1;
 				};
+
+				if (grid[rowIndex][colIndex] == 0) {
+					grid[rowIndex][colIndex] = (isPlayerOne) ? 1 : 2;
+
+					isPlayerOne = !isPlayerOne;
+				}
 
 				printf("rowIndex: %d, colIndex: %d\n", rowIndex, colIndex);
 				fflush(stdout);
